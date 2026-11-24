@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% if user.user_id == me %}{% set active = 'profile' %}{% endif %}
+{% block title %}{{ user.display_name }}(@{{ user.user_id }}) • Instagram{% endblock %}
+{% block content %}
+<div class="profile">
+  {% include "_profile_head.html" %}
+  <div class="tabbar"><span class="tab active"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg>게시물</span></div>
+  {% if posts %}
+  <div class="grid">
+    {% for p in posts %}
+    <a class="cell" href="/p/{{ p.post_id }}">
+      <img src="/static/{{ p.image_path }}" alt="" loading="lazy">
+      <span class="cell-hover"><svg viewBox="0 0 24 24"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.6-4.6A8.5 8.5 0 1 1 20.5 11.5z"/></svg>{{ p.comment_count }}</span>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty"><h3>게시물 없음</h3></div>
+  {% endif %}
+</div>
+{% endblock %}

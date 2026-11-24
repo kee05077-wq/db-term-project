@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}{{ post.author_id }}님의 게시물 • Instagram{% endblock %}
+{% block content %}
+<article class="card post-detail">
+  <img class="detail-img" src="/static/{{ post.image_path }}" alt="">
+  <div class="detail-side">
+    <header class="post-head">
+      <a href="/u/{{ post.author_id }}">{{ avatar(post.author_id) }}</a>
+      <a class="uname" href="/u/{{ post.author_id }}">{{ post.author_id }}</a>
+    </header>
+    <div class="detail-comments">
+      {% if post.caption %}
+      <div class="detail-comment">
+        {{ avatar(post.author_id) }}
+        <div><p class="comment"><a class="uname" href="/u/{{ post.author_id }}">{{ post.author_id }}</a> {{ link_mentions(post.caption, valid) }}</p>
+        <span class="muted tiny">{{ post.created_at|time_ago }}</span></div>
+      </div>
+      {% endif %}
+      {% for c in comments %}
+      <div class="detail-comment">
+        <a href="/u/{{ c.author_id }}">{{ avatar(c.author_id) }}</a>
+        <div>{% include "_comments.html" %}<span class="muted tiny">{{ c.created_at|time_ago }}</span></div>
+      </div>
+      {% else %}
+      {% if not post.caption %}<p class="muted center">아직 댓글이 없습니다.</p>{% endif %}
+      {% endfor %}
+    </div>
+    <div class="post-body">
+      <span class="muted tiny">{{ post.created_at.strftime('%Y년 %m월 %d일') }}</span>
+      <form class="comment-form" method="post" action="/p/{{ post.post_id }}/comment">
+        <input name="text" placeholder="댓글 달기... (@아이디로 언급)" autocomplete="off" required autofocus>
+        <button type="submit">게시</button>
+      </form>
+    </div>
+  </div>
+</article>
+{% endblock %}

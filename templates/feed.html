@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% set active = 'home' %}
+{% block content %}
+<div class="feed-layout">
+  <section class="feed">
+    {% for p in posts %}
+    <article class="card post">
+      <header class="post-head">
+        <a href="/u/{{ p.author_id }}">{{ avatar(p.author_id) }}</a>
+        <a class="uname" href="/u/{{ p.author_id }}">{{ p.author_id }}</a>
+        <span class="muted">• {{ p.created_at|time_ago }}</span>
+      </header>
+      <a href="/p/{{ p.post_id }}"><img class="post-img" src="/static/{{ p.image_path }}" alt="" loading="lazy"></a>
+      <div class="post-body">
+        <div class="actions">
+          <a href="/p/{{ p.post_id }}" title="댓글"><svg viewBox="0 0 24 24"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.6-4.6A8.5 8.5 0 1 1 20.5 11.5z"/></svg></a>
+        </div>
+        {% if p.caption %}<p class="comment"><a class="uname" href="/u/{{ p.author_id }}">{{ p.author_id }}</a> {{ link_mentions(p.caption, valid) }}</p>{% endif %}
+        {% set cs = comments[p.post_id] %}
+        {% if cs|length > 2 %}<a class="muted" href="/p/{{ p.post_id }}">댓글 {{ cs|length }}개 모두 보기</a>{% endif %}
+        {% for c in cs[-2:] %}{% include "_comments.html" %}{% endfor %}
+        <form class="comment-form" method="post" action="/p/{{ p.post_id }}/comment">
+          <input type="hidden" name="next" value="/#post-{{ p.post_id }}">
+          <input name="text" placeholder="댓글 달기... (@아이디로 언급)" autocomplete="off" required>
+          <button type="submit">게시</button>
+        </form>
+      </div>
+      <span id="post-{{ p.post_id }}" class="anchor"></span>
+    </article>
+    {% else %}
+    <div class="empty">
+      <h3>아직 게시물이 없습니다</h3>
+      <p class="muted">다른 사람을 팔로우하거나 첫 사진을 올려 보세요.</p>
+      <a class="btn-primary inline" href="/create">사진 올리기</a>
+    </div>
+    {% endfor %}
+  </section>
+  <aside class="side">
+    <div class="me-row">
+      {{ avatar(me_row.user_id, 44) }}
+      <div><a class="uname" href="/u/{{ me_row.user_id }}">{{ me_row.user_id }}</a><div class="muted">{{ me_row.display_name }}</div></div>
+    </div>
+    {% if suggestions %}
+    <p class="side-title">회원님을 위한 추천</p>
+    {% for s in suggestions %}
+    <div class="person">
+      <a href="/u/{{ s.user_id }}">{{ avatar(s.user_id) }}</a>
+      <div class="grow"><a class="uname" href="/u/{{ s.user_id }}">{{ s.user_id }}</a><div class="muted">{{ s.display_name }}</div></div>
+      <form method="post" action="/u/{{ s.user_id }}/follow"><input type="hidden" name="next" value="/"><button class="link-btn">팔로우</button></form>
+    </div>
+    {% endfor %}
+    {% endif %}
+  </aside>
+</div>
+{% endblock %}

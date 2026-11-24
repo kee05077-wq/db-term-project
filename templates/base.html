@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Instagram{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+{% block body %}
+<nav class="sidebar">
+  <a class="logo" href="/">Instagram</a>
+  <a class="nav-item {% if active == 'home' %}active{% endif %}" href="/">
+    <svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z"/></svg><span class="label">홈</span></a>
+  <a class="nav-item {% if active == 'search' %}active{% endif %}" href="/search">
+    <svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg><span class="label">검색</span></a>
+  <a class="nav-item {% if active == 'create' %}active{% endif %}" href="/create">
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M12 8v8M8 12h8"/></svg><span class="label">만들기</span></a>
+  <a class="nav-item {% if active == 'profile' %}active{% endif %}" href="/u/{{ me }}">
+    {{ avatar(me, 24) }}<span class="label">프로필</span></a>
+  <div class="nav-bottom">
+    <a class="nav-item" href="/settings/password">
+      <svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span class="label">비밀번호 변경</span></a>
+    <a class="nav-item" href="/logout">
+      <svg viewBox="0 0 24 24"><path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/></svg><span class="label">로그아웃</span></a>
+  </div>
+</nav>
+<main class="main">
+  {% if flash %}<div class="flash">{{ flash }}</div>{% endif %}
+  {% block content %}{% endblock %}
+</main>
+{% endblock %}
+</body>
+</html>

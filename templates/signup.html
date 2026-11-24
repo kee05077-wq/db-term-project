@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}가입하기 • Instagram{% endblock %}
+{% block body %}
+<div class="auth">
+  <div class="auth-box">
+    <h1 class="logo big">Instagram</h1>
+    <p class="auth-sub">친구들의 사진과 동영상을 보려면 가입하세요.</p>
+    <form method="post" action="/signup" class="auth-form">
+      <input name="user_id" placeholder="사용자 아이디" value="{{ user_id or '' }}" maxlength="30" required autofocus>
+      <input name="display_name" placeholder="성명" value="{{ display_name or '' }}" maxlength="50" required>
+      <input name="password" type="password" placeholder="비밀번호" required>
+      <button class="btn-primary" type="submit">가입</button>
+    </form>
+    {% if error %}<p class="error">{{ error }}</p>{% endif %}
+  </div>
+  <div class="auth-box small">계정이 있으신가요? <a href="/login">로그인</a></div>
+</div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% set active = 'search' %}
+{% block title %}검색 • Instagram{% endblock %}
+{% block content %}
+<div class="search-page">
+  <h2>검색</h2>
+  <form method="get" action="/search"><input class="search-input" name="q" value="{{ q }}" placeholder="아이디 또는 이름 검색" autofocus></form>
+  <div class="list">
+    {% for u in people %}{% include "_person.html" %}
+    {% else %}{% if q %}<p class="muted center">검색 결과가 없습니다.</p>{% endif %}{% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,2 @@
+{# expects: c (comment), valid (set of existing user ids) #}
+<p class="comment"><a class="uname" href="/u/{{ c.author_id }}">{{ c.author_id }}</a> {{ link_mentions(c.text, valid) }}</p>

@@ -1,0 +1,21 @@
+<header class="profile-head">
+  {{ avatar(user.user_id, 120) }}
+  <div class="profile-info">
+    <div class="profile-row">
+      <h2>{{ user.user_id }}</h2>
+      {% if user.user_id == me %}
+        <a class="btn-gray" href="/settings/password">비밀번호 변경</a>
+      {% elif user.is_following %}
+        <form method="post" action="/u/{{ user.user_id }}/unfollow"><button class="btn-gray">팔로잉 ✓</button></form>
+      {% else %}
+        <form method="post" action="/u/{{ user.user_id }}/follow"><button class="btn-primary inline">팔로우</button></form>
+      {% endif %}
+    </div>
+    <div class="profile-row stats">
+      <a href="/u/{{ user.user_id }}">게시물 <b>{{ user.posts }}</b></a>
+      <a href="/u/{{ user.user_id }}/followers">팔로워 <b>{{ user.followers }}</b></a>
+      <a href="/u/{{ user.user_id }}/following">팔로우 <b>{{ user.following }}</b></a>
+    </div>
+    <div class="display-name">{{ user.display_name }}</div>
+  </div>
+</header>

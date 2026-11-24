@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% set active = 'create' %}
+{% block title %}새 게시물 • Instagram{% endblock %}
+{% block content %}
+<div class="card form-card create">
+  <h2>새 게시물 만들기</h2>
+  <form method="post" action="/create" enctype="multipart/form-data" class="stack">
+    <label class="drop" id="drop">
+      <img id="preview" alt="" hidden>
+      <span id="drop-text">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg>
+        사진을 선택하세요
+      </span>
+      <input type="file" name="image" accept="image/*" required id="file">
+    </label>
+    <textarea name="caption" rows="3" placeholder="문구를 입력하세요..."></textarea>
+    <button class="btn-primary" type="submit">공유하기</button>
+  </form>
+  {% if error %}<p class="error">{{ error }}</p>{% endif %}
+</div>
+<script>
+  const file = document.getElementById('file'), img = document.getElementById('preview');
+  file.addEventListener('change', () => {
+    if (!file.files[0]) return;
+    img.src = URL.createObjectURL(file.files[0]);
+    img.hidden = false;
+    document.getElementById('drop-text').hidden = true;
+  });
+</script>
+{% endblock %}

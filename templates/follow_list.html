@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} • @{{ user.user_id }}{% endblock %}
+{% block content %}
+<div class="profile">
+  {% include "_profile_head.html" %}
+  <div class="tabbar">
+    <a class="tab {% if title == '팔로워' %}active{% endif %}" href="/u/{{ user.user_id }}/followers">팔로워</a>
+    <a class="tab {% if title == '팔로잉' %}active{% endif %}" href="/u/{{ user.user_id }}/following">팔로잉</a>
+  </div>
+  <div class="list">
+    {% for u in people %}{% include "_person.html" %}
+    {% else %}<p class="muted center">{{ title }}가 없습니다.</p>{% endfor %}
+  </div>
+</div>
+{% endblock %}
