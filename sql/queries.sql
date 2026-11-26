@@ -1,6 +1,8 @@
 -- =============================================================
 --  SQL used by the web application (app.py)
 --  %s in app.py = parameter; here shown with example values
+--  Execute individual statements only
+--  Use test.sql for transaction-based testing
 -- =============================================================
 USE instagram;
 
@@ -69,3 +71,26 @@ SELECT u.user_id, u.display_name FROM `User` u
 WHERE u.user_id <> 'alice'
   AND u.user_id NOT IN (SELECT followee_id FROM Follow WHERE follower_id = 'alice')
 ORDER BY RAND() LIMIT 5;
+
+-- [bonus] save photo location
+INSERT INTO PhotoLocation
+    (post_id, latitude, longitude, taken_at)
+VALUES
+    (2, 37.566500, 126.978000, '2026-11-16 17:00:00');
+    
+-- [bonus] travel timeline by date range
+SELECT Post.image_path,
+       PhotoLocation.latitude,
+       PhotoLocation.longitude,
+       PhotoLocation.taken_at
+FROM Post
+JOIN PhotoLocation ON Post.post_id = PhotoLocation.post_id
+WHERE Post.author_id = 'alice'
+  AND PhotoLocation.taken_at >= '2026-11-01'
+  AND PhotoLocation.taken_at < '2026-12-01'
+ORDER BY PhotoLocation.taken_at ASC, Post.post_id ASC;
+
+-- [bonus] get location of a post
+SELECT latitude, longitude, taken_at
+FROM PhotoLocation
+WHERE post_id = 1;
