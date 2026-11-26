@@ -8,6 +8,7 @@ CREATE DATABASE IF NOT EXISTS instagram
   DEFAULT COLLATE utf8mb4_unicode_ci;
 USE instagram;
 
+DROP TABLE IF EXISTS PhotoLocation;
 DROP TABLE IF EXISTS Comment;
 DROP TABLE IF EXISTS Follow;
 DROP TABLE IF EXISTS Post;
@@ -56,3 +57,15 @@ CREATE TABLE Follow (
 
 -- index for the home-feed query (posts of an author, newest first)
 CREATE INDEX idx_post_author_time ON Post(author_id, created_at);
+
+-- Bonus: Photo location and travel timeline
+CREATE TABLE PhotoLocation (
+    post_id INT PRIMARY KEY,
+    latitude DECIMAL(9,6) NOT NULL,
+    longitude DECIMAL(9,6) NOT NULL,
+    taken_at DATETIME NOT NULL,
+    FOREIGN KEY (post_id) REFERENCES Post(post_id)
+        ON DELETE CASCADE,
+    CHECK (latitude BETWEEN -90 AND 90),
+    CHECK (longitude BETWEEN -180 AND 180)
+);
